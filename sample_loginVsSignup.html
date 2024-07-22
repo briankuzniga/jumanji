@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="login_signup.css">
+    <title>SignUp and SignIn</title>
+</head>
+<body>
+    <input type="hidden" id="status" value=" "> <!-- <%= request.getAttribute("status")%> -->
+
+    <div class="wrapper">
+        <nav class="nav">
+            <div class="nav-logo">
+                <p>We all have Hope for your loved one.</p>
+            </div>
+
+            <div class="nav-button">
+                <button class="btn white-btn" id="loginBtn" onclick="showLogin()">Sign In</button>
+                <button class="btn" id="registerBtn" onclick="showRegister()">Sign Up</button>
+            </div>
+        </nav> 
+
+        <div class="form-box">
+            <div class="login-container" id="login">
+                <div class="top">
+                    <span>Don't have an account?<a href="#" onclick="showRegister()">Sign Up</a></span>
+                    <header>Login</header>
+                </div>
+                <form class="register-form" onsubmit="return handleLogin(event)">
+                    <div class="input-box">
+                        <input type="email" name="email" id="login-email" class="input-field" placeholder="Email">
+                        <i class="bx bx-envelope"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="password" id="login-password" class="input-field" placeholder="Password">
+                        <i class="bx bx-lock-alt"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="submit" class="submit" value="Sign In">
+                    </div>
+                </form>
+                <div class="two-col">
+                    <div class="one">
+                        <input type="checkbox" id="login-check">
+                        <label for="login-check">Remember me</label>
+                    </div>
+                    <div class="two">
+                        <label><a href="#">Forgot password?</a></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="register-container" id="register">
+                <div class="top">
+                    <span>Have an account?<a href="#" onclick="showLogin()">Login</a></span>
+                    <header>Sign Up</header>
+                </div>
+                <form class="register-form" id="register-form" onsubmit="return handleRegister(event)">
+                    <div class="two-forms">
+                        <div class="input-box">
+                            <input type="text" name="FName" id="FName" class="input-field" placeholder="Firstname">
+                            <span id="Fname-error" class="error-message"></span>
+                            <i class="bx bx-user"></i>
+                        </div>
+                        <div class="input-box">
+                            <input type="text" name="LName" id="LName" class="input-field" placeholder="Lastname">
+                            <span id="Lname-error" class="error-message"></span>
+                            <i class="bx bx-user"></i>
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" name="email" id="email" class="input-field" placeholder="Email">
+                        <span id="email-error" class="error-message"></span>
+                        <i class="bx bx-envelope"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="password" id="password" class="input-field" placeholder="Password">
+                        <span id="password-error" class="error-message"></span>
+                        <i class="bx bx-lock-alt"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="submit" class="submit" value="Register">
+                    </div>
+                </form>
+                <div class="two-col">
+                    <div class="one">
+                        <input type="checkbox" id="register-check">
+                        <label for="register-check">Remember me</label>
+                    </div>
+                    <div class="two">
+                        <label><a href="#">Terms & conditions</a></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var loginForm = document.getElementById("login");
+        var registerForm = document.getElementById("register");
+        var loginBtn = document.getElementById("loginBtn");
+        var registerBtn = document.getElementById("registerBtn");
+
+        function showLogin() {
+            loginForm.style.left = "4px";
+            registerForm.style.right = "-520px";
+            loginBtn.classList.add("white-btn");
+            registerBtn.classList.remove("white-btn");
+            loginForm.style.opacity = 1;
+            registerForm.style.opacity = 0;
+        }
+
+        function showRegister() {
+            registerForm.style.right = "5px";
+            loginForm.style.left = "-510px";
+            registerBtn.classList.add("white-btn");
+            loginBtn.classList.remove("white-btn");
+            registerForm.style.opacity = 1;
+            loginForm.style.opacity = 0;
+        }
+
+        function validateRegister() {
+            const FName = document.getElementById("FName").value;
+            const LName = document.getElementById("LName").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            const FnameError = document.getElementById("Fname-error");
+            const LnameError = document.getElementById("Lname-error");
+            const emailError = document.getElementById("email-error");
+            const passwordError = document.getElementById("password-error");
+
+            FnameError.textContent = "";
+            LnameError.textContent = "";
+            emailError.textContent = "";
+            passwordError.textContent = "";
+
+            let isValid = true;
+
+            if (FName === "") {
+                FnameError.textContent = "⚠ Enter Firstname Please";
+                isValid = false;
+            }
+
+            if (LName === "") {
+                LnameError.textContent = "⚠ Enter Lastname Please";
+                isValid = false;
+            }
+
+            if (email === "" || !email.includes("@")) {
+                emailError.textContent = "⚠ Please enter a valid email";
+                isValid = false;
+            }
+
+            if (password === "" || password.length < 6) {
+                passwordError.textContent = "⚠ Please create a password with at least 6 characters";
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function validateLogin() {
+            const email = document.getElementById("login-email").value;
+            const password = document.getElementById("login-password").value;
+
+            if (email === "" || password === "") {
+                swal("Error", "Please enter both email and password", "error");
+                return false;
+            }
+
+            if (localStorage.getItem("registeredEmail") !== email) {
+                swal("Error", "You must sign up first before you can log in.", "error");
+                return false;
+            }
+
+            return true;
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            if (validateRegister()) {
+                localStorage.setItem("registeredEmail", document.getElementById("email").value);
+                swal("Success", "Registration successful! Redirecting to sign in.", "success")
+                    .then(() => {
+                        showLogin();
+                    });
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            if (validateLogin()) {
+                swal("Success", "Login successful! Redirecting to homepage.", "success")
+                    .then(() => {
+                        window.location.href = "home2.html";
+                    });
+            }
+        }
+    </script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="alert/dist/sweetalert.css">
+
+    <script type="text/javascript">
+        var status = document.getElementById("status").value;
+        if (status == "success") {
+            swal("Congrats", "Account Created Successfully", "success");
+        } if (status == "failed") {
+            swal("Sorry", "Check Your Information Please", "error");
+        }
+    </script>
+</body>
+</html>
